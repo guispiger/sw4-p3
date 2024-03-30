@@ -1,0 +1,32 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./modelo.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+    <ui:define name="content">
+        <h:form>
+            <p:outputLabel value="Filtrar por Especialidade: "/>
+            <p:selectOneMenu value="#{mecanicoBean.especialidade}" converter="#{EspecConverter}">
+                <f:selectItems value="#{especialidadeBean.itensEspecialidade}"/>
+                <p:ajax event="change" listener="#{mecanicoBean.carregaMecanicos()}" immediate="false" update="tabEspecialidades"/>
+            </p:selectOneMenu>
+        </h:form>
+        <p:dataTable value="#{mecanicoBean.mecanicos}" var="x" id="tabEspecialidades">
+            <p:column headerText="C&oacute;digo">
+                <h:outputText value="#{x.id}"/>
+            </p:column>
+            <p:column headerText="Nome">
+                <h:outputText value="#{x.nome}"/>
+            </p:column>
+            <p:column headerText="Valor da Hora">
+                <h:outputText value="#{x.valorHora}"/>
+            </p:column>
+            <p:column headerText="Especialidade">
+                <h:outputText value="#{x.especialidade.nome.concat(' - Vagas: ').concat(x.especialidade.vagas)}"/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

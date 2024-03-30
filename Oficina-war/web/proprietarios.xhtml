@@ -1,0 +1,51 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./modelo.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html">
+
+    <ui:define name="content">
+        <h:form>
+            <p:panelGrid columns="2">
+                <p:outputLabel value="CPF"/>
+                <p:inputText value="#{proprietarioBean.proprietario.cpf}"
+                             required="true"
+                             requiredMessage="O CPF é obrigatório"
+                             maxlength="11"
+                             />
+
+                <p:outputLabel value="Nome"/>
+                <p:inputText value="#{proprietarioBean.proprietario.nome}"
+                             required="true"
+                             requiredMessage="O Nome é obrigatório"/>
+                
+                <p:outputLabel value="Telefone"/>
+                <p:inputText value="#{proprietarioBean.proprietario.telefone}"
+                             maxlength="20"/>
+
+                <p:outputLabel value="Endereco"/>
+                <p:inputText value="#{proprietarioBean.proprietario.endereco}"
+                             maxlength="300"/>
+
+            </p:panelGrid>
+            <p:commandButton value="Cadastrar" action="#{proprietarioBean.cadastrar()}" ajax="false"/>
+        </h:form>
+        
+        <p:dataTable id="listaProprietarios" value="#{proprietarioBean.proprietarios}" var="x">
+            <p:column headerText="CPF">
+                <h:outputText value="#{x.cpf}"/>
+            </p:column>
+            <p:column headerText="Nome">
+                <h:outputText value="#{x.nome}"/>
+            </p:column>
+            <p:column headerText="Telefone">
+                <h:outputText value="#{x.telefone}"/>
+            </p:column>
+            <p:column headerText="Telefone">
+                <h:outputText value="#{x.endereco}"/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

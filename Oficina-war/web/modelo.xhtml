@@ -1,0 +1,59 @@
+<?xml version='1.0' encoding='UTF-8' ?> 
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+      xmlns:h="http://xmlns.jcp.org/jsf/html"
+      xmlns:p="http://primefaces.org/ui"> 
+    <h:head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+        <h:outputStylesheet library="webjars" name="font-awesome/6.4.0/css/all-jsf.css"/>
+        <h:outputScript library="webjars" name="font-awesome/6.4.0/js/all.js"/>
+        <title>Sistema da Oficina</title>
+    </h:head>
+
+    <h:body>
+        <p:growl id="mensagens" showDetail="true" escape="false"/>
+        <div id="top">
+            <h:form>
+                <p:menubar>
+                    <p:menuitem value="Especialidades" icon="fa-solid fa-toolbox"
+                                ajax="true" action="especialidades.jsf?faces-redirect=true"/>
+                    <p:menuitem value="Mecanicos" icon="fa-solid fa-wrench"
+                                ajax="false" action="mecanicos.jsf?faces-redirect=true"/>
+                    <p:menuitem value="Proprietarios" icon="fa-solid fa-person"
+                                ajax="false" action="proprietarios.jsf?faces-redirect=true"/>
+                    <p:menuitem value="Veículos" icon="fa-solid fa-car-side"
+                                ajax="false" action="veiculos.jsf?faces-redirect=true"/>
+                    <p:menuitem value="Agendar" icon="fa-regular fa-clock"
+                                ajax="false" action="agendar.jsf?faces-redirect=true"/>
+                    <p:menuitem value="Agendamentos" icon="fa-solid fa-calendar-days"
+                                ajax="false" action="agendamentos.jsf?faces-redirect=true"/>
+
+
+                    <p:menuitem value="Login" icon="fa-solid fa-user"
+                                ajax="false" action="login.jsf?faces-redirect=true" rendered="#{not usuarioBean.logado}"/>
+                </p:menubar>
+                
+                <h:outputText value="Olá #{usuarioBean.nome} " rendered="#{usuarioBean.logado}"/>
+                <h:commandLink action="#{usuarioBean.logout()}" rendered="#{usuarioBean.logado}">
+                    <h:outputText value="Sair"/>
+                </h:commandLink>
+            </h:form>
+        </div>
+
+        <div id="content" class="center_content">
+            <ui:insert name="content">Content</ui:insert>
+        </div>
+
+        <div id="bottom">
+
+        </div>
+        <h:form>
+            <p:confirmDialog global="true" showEffect="fade" hideEffect="fade" responsive="true" width="350">
+                <p:commandButton value="N&atilde;o" type="button" styleClass="ui-confirmdialog-no ui-button-flat"/>
+                <p:commandButton value="Sim" type="button" styleClass="ui-confirmdialog-yes" />
+            </p:confirmDialog>        
+        </h:form>
+    </h:body>
+
+</html>

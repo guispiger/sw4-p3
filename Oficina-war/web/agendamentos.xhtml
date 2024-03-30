@@ -1,0 +1,71 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./modelo.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core"> 
+    <ui:define name="content">
+        <h:form>
+            <h:panelGrid columns="4">
+                <p:outputLabel value="Filtrar por Especialidade: "/>
+                <p:selectOneMenu value="#{agendamentoBean.especialidade}" converter="#{EspecConverter}">
+                    <f:selectItems value="#{especialidadeBean.itensEspecialidade}"/>
+                    <p:ajax event="change"
+                            listener="#{agendamentoBean.carregaAgendamentos()}" 
+                            immediate="false"
+                            update="tabAgendamentos"/>
+                </p:selectOneMenu>
+                
+                <p:outputLabel value="Filtrar por Mecânico "/>
+                <p:selectOneMenu value="#{agendamentoBean.mecanico}" converter="#{MecanicoConverter}">
+                    <f:selectItems value="#{mecanicoBean.itensMecanico}"/>
+                    <p:ajax event="change" 
+                            listener="#{agendamentoBean.carregaAgendamentos()}" 
+                            immediate="false" 
+                            update="tabAgendamentos"/>
+                </p:selectOneMenu>
+                
+            </h:panelGrid>
+        </h:form>
+        <p:dataTable value="#{agendamentoBean.agendamentos}" var="x" id="tabAgendamentos">
+            <p:column headerText="C&oacute;digo" sortBy="#{x.id}" sortable="true">
+                <h:outputText value="#{x.id}"/>
+            </p:column>
+            <p:column headerText="Data" sortBy="#{x.data}" sortable="true" >
+                <h:outputText value="#{x.data}">
+                    <f:convertDateTime pattern="dd/MM/YYYY" />
+                </h:outputText>
+            </p:column>
+            <p:column headerText="Especialidade">
+                <h:outputText value="#{x.especialidade.nome}"/>
+            </p:column>
+            <p:column headerText="Mecânico">
+                <h:outputText value="#{x.mecanico.nome.concat('-').concat(x.mecanico.especialidade.nome)}"/>
+            </p:column>
+            <p:column headerText="Período">
+                <h:outputText value="#{x.periodo eq 'M'? 'Matutino' : x.periodo eq 'V' ? 'Vespertino' : 'Integral'}"/>
+            </p:column>
+            <p:column headerText="Reclamação">
+                <h:outputText value="#{x.reclamacao}"/>
+            </p:column>
+            <p:column headerText="Veículo">
+                <h:outputText value="#{x.veiculo.modelo.concat('-').concat(x.veiculo.ano)
+                                       .concat(' Proprietário: ').concat(x.veiculo.proprietario.nome)}"/>
+            </p:column>
+            <p:column>
+                <h:form>
+                    <p:commandButton value="Desmarcar" update="tabAgendamentos" 
+                                     action="#{agendamentoBean.cancelar(x)}" 
+                                      styleClass="rounded-button ui-button-danger"
+                                      icon="fa-solid fa-xmark">
+                    <p:confirm header="Confirma&ccedil;&atilde;o" 
+                               message="Tem certeza que deseja desmarcar este Agendamento?" 
+                               icon="pi pi-exclamation-triangle"/>
+                    </p:commandButton>
+                </h:form>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>

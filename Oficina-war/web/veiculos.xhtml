@@ -1,0 +1,60 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE composition PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+                template="./modelo.xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://xmlns.jcp.org/jsf/html"
+                xmlns:f="http://xmlns.jcp.org/jsf/core">
+
+    <ui:define name="content">
+        <h:form>
+            <p:panelGrid columns="2">
+                <p:outputLabel value="Placa"/>
+                <p:inputText value="#{veiculoBean.veiculo.placa}"
+                             required="true"
+                             requiredMessage="A placa é obrigatória"
+                             maxlength="7"
+                             />
+
+                <p:outputLabel value="Modelo"/>
+                <p:inputText value="#{veiculoBean.veiculo.modelo}"/>
+                
+                <p:outputLabel value="Ano"/>
+                <p:inputNumber id="ano" value="#{veiculoBean.veiculo.ano}"
+                             maxlength="4"
+                             minValue="1900"
+                             decimalPlaces="0"
+                             leadingZero="deny"
+                             thousandSeparator="">
+                </p:inputNumber>
+                    
+                
+                <p:outputLabel value="Proprietário"/>
+                <p:selectOneMenu value="#{veiculoBean.veiculo.proprietario}" 
+                                 converter="#{ProprietarioConverter}"
+                                 required="true"
+                                 requiredMessage="Obrigatório informar um proprietário">
+                    <f:selectItems value="#{proprietarioBean.itensProprietario}"/>
+                </p:selectOneMenu>
+
+            </p:panelGrid>
+            <p:commandButton value="Cadastrar" action="#{veiculoBean.cadastrar()}" ajax="false"/>
+        </h:form>
+        
+        <p:dataTable id="listaVeiculos" value="#{veiculoBean.veiculos}" var="x">
+            <p:column headerText="Placa">
+                <h:outputText value="#{x.placa}"/>
+            </p:column>
+            <p:column headerText="Modelo">
+                <h:outputText value="#{x.modelo}"/>
+            </p:column>
+            <p:column headerText="Ano" sortable="true" sortBy="#{x.ano}">
+                <h:outputText value="#{x.ano}"/>
+            </p:column>
+            <p:column headerText="Proprietário">
+                <h:outputText value="#{x.proprietario.nome.concat('-').concat(x.proprietario.cpf)}"/>
+            </p:column>
+        </p:dataTable>
+    </ui:define>
+</ui:composition>
